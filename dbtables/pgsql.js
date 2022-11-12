@@ -45,22 +45,16 @@ pgsql.on('error', (err) => {
 });
 
 
-import { numbersequences, regions, countries, markets, regionstates, cityareas, towns, users, activations, sms, smtps, banks, documenttypes, products, productmarkets, productcustomers, invites, infosessions, trainingschedule, cbtsessions, requiredfields, planpartners, driverplanpartners, marketplanpartners, roleaccesslist, marketlocations, vehicleassignment } from '../dbtables/base.js';
-import { nextofkins, guarantors, transporterdrivers, transporterreps, contacts, bankdetails, documents, profiles, profilesupdatehistory, driverlicenses, nationalids, passportids, visaids, transporter } from '../dbtables/onboard.js';
-import { verificationschedule, riderareamappings } from '../dbtables/verify.js';
-import { elearningsections, elearningmaterials, elearningsessions, elearningquestions, elearninganswers } from '../dbtables/elearning.js';
-import { archive } from '../dbtables/archive.js';
+import { users, profiles, loans, loanfinances } from '../dbtables/base.js';
 
 const defaultFields = {
     id: "int8",
-    marketId: "int8",
-    countryId: "int8",
     createdBy: "int8",
     updatedBy: "int8",
     createDate: "timestamp",
     updateDate: "timestamp",
     status: "text",
-    tableindex: ["marketid", "countryid", "createdby", "updatedby", "createdate", "updatedate", "status"],
+    tableindex: ["createdby", "updatedby", "createdate", "updatedate", "status"],
     tableunique: ["id"]
 }
 
@@ -82,17 +76,7 @@ export const sqlDBInit = async () => {
     }
 
     const allTables = {
-        numbersequences: numbersequences, regions: regions, countries: countries, markets: markets, regionstates: regionstates, cityareas: cityareas, towns: towns,
-        users: users, activations: activations, sms: sms, smtps: smtps, banks: banks, products: products, productmarkets: productmarkets,
-        productcustomers: productcustomers, invites: invites, infosessions: infosessions, planpartners: planpartners, driverplanpartners: driverplanpartners, marketplanpartners: marketplanpartners, trainingschedule: trainingschedule, cbtsessions: cbtsessions, roleaccesslist: roleaccesslist, marketlocations: marketlocations,
-
-        profiles: profiles, profilesupdatehistory:profilesupdatehistory, driverlicenses: driverlicenses, nationalids: nationalids, passportids: passportids, visaids: visaids, transporterdrivers: transporterdrivers, transporterreps: transporterreps,
-        bankdetails: bankdetails, nextofkins: nextofkins, guarantors: guarantors, contacts: contacts, documenttypes: documenttypes, documents: documents,
-        requiredfields: requiredfields, transporter: transporter,
-
-        verificationschedule: verificationschedule, riderareamappings: riderareamappings,
-        elearningsections: elearningsections, elearningmaterials: elearningmaterials, elearningsessions: elearningsessions, elearningquestions: elearningquestions, elearninganswers: elearninganswers,
-        vehicleassignment: vehicleassignment, archive: archive
+        users: users, profiles: profiles, loans: loans, loanfinances: loanfinances
     }
 
 
@@ -112,14 +96,14 @@ export const sqlDBInit = async () => {
                                     status: "active",
                                     failedMax: 10,
                                     mobile: "080",
-                                    email: "superadmin@moove.africa",
+                                    email: "superadmin@macroloan.com",
                                     firstname: "Super",
                                     surname: "Admin",
                                     username: "superadmin",
                                     password: "",
                                 }
 
-                                defaultUser.password = bcrypt.hashSync("supermoove", SALT)
+                                defaultUser.password = bcrypt.hashSync("supermacro", SALT)
 
                                 sqlTableInsert("users", users, defaultUser, {
                                     userId: 0

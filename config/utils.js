@@ -1,18 +1,8 @@
-// import xsalsa20 from 'xsalsa20'
-// import bcrypt from 'bcryptjs';
-
 import dotenv from 'dotenv';
 import mime from 'mime-types';
 import jwt from 'jsonwebtoken';
 
-import AWS from 'aws-sdk';
-import nodemailer from 'nodemailer';
-import awsConfig from 'aws-config';
-
-// const crypto = require('crypto')
-// const key = crypto.randomBytes(32)
-// const nonce = crypto.randomBytes(24)
-
+// import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -96,10 +86,10 @@ export const checkJWTCookie = function (req, res, next) {
             switch (req.url) {
                  case "/api/auth/signin":
                  case "/api/auth/forgot":
-                 case "/api/auth/selfonboarding/signin/":
-                 case "/api/drivers/getprofiles/lambda":
-                 case "/api/elearning/elearningsessions/authenticate":
-                 case "/api/setups/cbtsessions/authenticate":
+                //  case "/api/auth/selfonboarding/signin/":
+                //  case "/api/drivers/getprofiles/lambda":
+                //  case "/api/elearning/elearningsessions/authenticate":
+                //  case "/api/setups/cbtsessions/authenticate":
                      next(); // <-- important!
                      break;
 
@@ -210,137 +200,6 @@ export const jwtVerify = (jwtCookie) => {
     }
 }
 
-
-export const awsS3Upload = async (fileName, fileType, base64String ) => {
-    let bucketName = process.env.AWS_S3_BUCKET
-    if (bucketName == "") {
-        return ""
-    }
-
-    fileName = fileName.trim()
-    fileType = fileType.trim()
-    bucketName = bucketName.trim()
-    base64String = base64String.trim()
-
-    if (fileName == "" || fileType == "" || base64String == "") {
-        return ""
-    }
-    // fileName +=  "."+mime.extension(fileType)
-
-    const s3Config = {
-        accessKeyId: process.env.AWS_S3_ACCESSKEY,
-        secretAccessKey: process.env.AWS_S3_SECRETKEY,
-        region: process.env.AWS_S3_REGION,
-
-    }
-    AWS.config = awsConfig(s3Config)
-    const s3Bucket = new AWS.S3( { params: {Bucket: bucketName} } );
-
-    const buf = Buffer.from(base64String.split("base64,")[1],'base64')
-
-    try {
-        await s3Bucket.putObject({ Key: fileName,  Body: buf, ContentEncoding: "base64", ContentType: fileType }).promise()
-        return `${fileName}`
-    } catch (error) {
-        console.log("Error uploading data: ", error)
-        return ""
-    }
-}
-
-export const uploadFileToS3 = async (fileName, fileType, base64String ) => {
-    let bucketName = process.env.AWS_S3_BUCKET
-    if (!bucketName) 
-        throw new Error("Please provide AWS_S3_BUCKET env variable")
-
-    fileName = fileName.trim()
-    fileType = fileType.trim()
-    bucketName = bucketName.trim()
-    base64String = base64String.trim()
-
-    if (!fileName || !fileType || !base64String) 
-        throw new Error("Please provide fileName, fileType or base64String")
-
-    AWS.config = awsConfig({
-        accessKeyId: process.env.AWS_S3_ACCESSKEY,
-        secretAccessKey: process.env.AWS_S3_SECRETKEY,
-        region: process.env.AWS_S3_REGION,
-    })
-    const s3Bucket = new AWS.S3( { params: {Bucket: bucketName} } );
-    const buf = Buffer.from(base64String.split("base64,")[1],'base64')
-
-    await s3Bucket.putObject({ Key: fileName,  Body: buf, ContentEncoding: "base64", ContentType: fileType }).promise()
-    return fileName
-}
-
-export const awsS3Download = async (filePath) => {
-    let bucketName = process.env.AWS_S3_BUCKET
-
-    filePath = filePath.trim()
-    bucketName = bucketName.trim()
-    if (bucketName == "" || filePath == "") {
-        return null
-    }
-
-    const s3Config = {
-        region: process.env.AWS_S3_REGION,    
-        accessKeyId: process.env.AWS_S3_ACCESSKEY,
-        secretAccessKey: process.env.AWS_S3_SECRETKEY,
-    }
-    AWS.config = awsConfig(s3Config)
-    const s3Bucket = new AWS.S3( { params: {Bucket: bucketName} } );
-
-    try {
-        const result = await s3Bucket.getObject({ Key: filePath }).promise();
-        return result
-    } catch (error) {
-        console.log('Error downloading data: ', error);
-        return null
-    }
-}
-
-export const downloadFileFromS3 = async (filePath) => {
-    let bucketName = process.env.AWS_S3_BUCKET
-    if (!bucketName) 
-    throw new Error("Please provide AWS_S3_BUCKET env variable")
-
-
-    filePath = filePath.trim()
-    if (!filePath) 
-        throw new Error("Please provide filePath")
-
-    const s3Config = {
-        region: process.env.AWS_S3_REGION,    
-        accessKeyId: process.env.AWS_S3_ACCESSKEY,
-        secretAccessKey: process.env.AWS_S3_SECRETKEY,
-    }
-    AWS.config = awsConfig(s3Config)
-    const s3Bucket = new AWS.S3( { params: {Bucket: bucketName} } )
-
-    return await s3Bucket.getObject({ Key: filePath }).promise()
-}
-
-export const deleteFileFromS3 = async (filePath) => {
-    let bucketName = process.env.AWS_S3_BUCKET
-    if (!bucketName) 
-    throw new Error("Please provide AWS_S3_BUCKET env variable")
-
-
-    filePath = filePath.trim()
-    if (!filePath) 
-        throw new Error("Please provide filePath")
-
-    const s3Config = {
-        region: process.env.AWS_S3_REGION,    
-        accessKeyId: process.env.AWS_S3_ACCESSKEY,
-        secretAccessKey: process.env.AWS_S3_SECRETKEY,
-    }
-    AWS.config = awsConfig(s3Config)
-    const s3Bucket = new AWS.S3( { params: {Bucket: bucketName} } )
-
-    return await s3Bucket.deleteObject({ Key: filePath }).promise()
-}
-
-
 export function getRandomString(length) {
     var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var result = '';
@@ -350,38 +209,19 @@ export function getRandomString(length) {
     return result;
 }
 
-export const transporter = nodemailer.createTransport({
-    host: "smtp.sendgrid.net",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.SMTP_USERNAME,
-        pass: process.env.SMTP_PASSWORD,
-    },
-    tls: {
-    // do not fail on invalid certs
-        rejectUnauthorized: false,
-    },
-});
-
-// export const mailer = async () => {
-//     let aws = require("@aws-sdk/client-ses");
-//     let { defaultProvider } = require("@aws-sdk/credential-provider-node");
-    
-//     const ses = new aws.SES({
-//       apiVersion: "2010-12-01",
-//       region: process.env.AWS_S3_REGION,
-//       defaultProvider,
-//     });
-    
-//     // create Nodemailer SES transporter
-//     let transporter = nodemailer.createTransport({
-//       SES: { ses, aws },
-//     });
-
-//     return transporter
-// }
-
+// export const transporter = nodemailer.createTransport({
+//     host: "smtp.sendgrid.net",
+//     port: 465,
+//     secure: true,
+//     auth: {
+//         user: process.env.SMTP_USERNAME,
+//         pass: process.env.SMTP_PASSWORD,
+//     },
+//     tls: {
+//     // do not fail on invalid certs
+//         rejectUnauthorized: false,
+//     },
+// });
 
 
 // export const hashPassword = async (password) => {

@@ -34,7 +34,11 @@ export let pgsql = {}
 const { Pool } = pg
 
 try {
-    pgsql = new Pool({ connectionString, })
+    pgsql = new Pool({ connectionString, 
+        ssl: {    /* <----- Add SSL option */
+            rejectUnauthorized: false,
+        },
+    })
 } catch (error) {
     console.log(error)
     process.exit(0)

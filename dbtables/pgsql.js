@@ -249,16 +249,11 @@ export const sqlTableInsert = async (tableName, tableFields, jsonRecord, jwtToke
 
     jsonRecord.id = sqlTableID()
 
-    if (jsonRecord.marketId == undefined || jsonRecord.marketId == null) {
-        jsonRecord.marketId = (jwtToken.marketId === undefined) ? 0 : jwtToken.marketId
+    if (jwtToken) {
+        jsonRecord.createdBy = (jwtToken.userId === undefined) ? jsonRecord.id : jwtToken.userId
+        jsonRecord.updatedBy = (jwtToken.userId === undefined) ? jsonRecord.id : jwtToken.userId
+        
     }
-
-    if (jsonRecord.countryId == undefined || jsonRecord.countryId == null) {
-        jsonRecord.countryId = (jwtToken.countryId === undefined) ? 0 : jwtToken.countryId
-    }
-
-    jsonRecord.createdBy = (jwtToken.userId === undefined) ? 0 : jwtToken.userId
-    jsonRecord.updatedBy = (jwtToken.userId === undefined) ? 0 : jwtToken.userId
 
     jsonRecord.createDate = new Date().toUTCString();
     jsonRecord.updateDate = new Date().toUTCString();

@@ -20,6 +20,7 @@ export const profiles = {
     bankname: "text",
     address: "text",
 }
+
 export const users = {
     role: "text", //lender, borrower, superadmin
     failed: "int",

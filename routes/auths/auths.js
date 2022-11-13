@@ -22,30 +22,6 @@ router.post('/signin', async (req, res) => {
         return res.status(400).json(resMsg);
     }
 
-    let country = ""
-    let countryId = 0
-    if (req.body.countryId && req.body.username == "selfonboard") { 
-
-        if (req.body.mobilenumber == null || req.body.mobilenumber == undefined || req.body.mobilenumber == "") {
-            resMsg.Message = "Mobile number is missing!"
-            return res.status(400).json(resMsg);
-        }
-
-
-        const sqlCountry = "select name from countries where id = $1";
-        try {
-            pgsql.query(sqlCountry, [req.body.countryId]).then((result) => {
-                if (result.rowCount > 0) {
-                    country = result.rows[0].name
-                    countryId = req.body.countryId
-                }
-            })
-        } catch (error) {
-            resMsg.Message = "You are not registered"
-            return res.status(400).json(resMsg);
-        }
-    }
-
     const sqlQuery = "select u.*, COALESCE(c.name,'') as country from users as u left join countries as c on c.id = u.countryid where u.username = $1  limit 1";
     pgsql.query(sqlQuery, [req.body.username]).then((result) => {
         if (result.rowCount == 1) {

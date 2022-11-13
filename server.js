@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auths/auths.js';
+import authRoutes from './routes/auths/auth/_route.js';
 import { sqlDBInit } from './dbtables/pgsql.js';
 import checkAuth from './config/auth.js'
 import { checkJWTCookie } from './config/utils.js'

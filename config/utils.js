@@ -85,11 +85,8 @@ export const checkJWTCookie = function (req, res, next) {
         default:
             switch (req.url) {
                  case "/api/auth/signin":
+                 case "/api/auth/signup":
                  case "/api/auth/forgot":
-                //  case "/api/auth/selfonboarding/signin/":
-                //  case "/api/drivers/getprofiles/lambda":
-                //  case "/api/elearning/elearningsessions/authenticate":
-                //  case "/api/setups/cbtsessions/authenticate":
                      next(); // <-- important!
                      break;
 

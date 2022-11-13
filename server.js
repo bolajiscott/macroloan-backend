@@ -3,14 +3,14 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 
-import authRoutes from './routes/auths/auth/_route.js';
+import authRoutes from './routes/auths/route.js';
 import { sqlDBInit } from './dbtables/pgsql.js';
 import checkAuth from './config/auth.js'
 import { checkJWTCookie } from './config/utils.js'
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8181
+const PORT = process.env.PORT || 8181;
 
 sqlDBInit()
 
@@ -43,4 +43,8 @@ app.use('/api/auth', authRoutes)
 
 app.use(express.static('uiapp'))
 
-app.listen(PORT, console.log(`server is running in ${process.env.NODE_ENV} mode on port ${PORT}`))
+// app.listen(PORT, console.log(`server is running in ${process.env.NODE_ENV} mode on port ${PORT}`))
+
+app.listen(PORT, () => {
+    console.log("App is running on port " + port);
+});

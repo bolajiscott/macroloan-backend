@@ -1,10 +1,10 @@
 import express from "express"
 import bcrypt from 'bcryptjs';
 
-import { jwtVerify, SALT, jwtGenerate, jwtGenerateLong } from "../../../config/utils.js"
+import { jwtVerify, SALT, jwtGenerate, jwtGenerateLong } from "../../config/utils.js"
 
-import { pgsql } from "../../../dbtables/pgsql.js"
-import UserModel from "../../../dbtables/user.js"
+import { pgsql } from "../../dbtables/pgsql.js"
+import UserModel from "../../dbtables/user.js"
 import {validateSignUpRequest, validateSignInRequest } from "./validation.js"
 import Handler from "./handler.js"
 

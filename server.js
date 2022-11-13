@@ -4,6 +4,9 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 
 import authRoutes from './routes/auths/route.js';
+import profileRoutes from './routes/profiles/route.js';
+
+
 import { sqlDBInit } from './dbtables/pgsql.js';
 import checkAuth from './config/auth.js'
 import { checkJWTCookie } from './config/utils.js'
@@ -39,6 +42,7 @@ app.use(checkJWTCookie)
 
 //auth routes
 app.use('/api/auth', authRoutes)
+app.use('/api/profile', allowCORS, checkAuth, profileRoutes)
 
 
 app.use(express.static('uiapp'))

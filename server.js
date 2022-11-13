@@ -46,5 +46,5 @@ app.use(express.static('uiapp'))
 // app.listen(PORT, console.log(`server is running in ${process.env.NODE_ENV} mode on port ${PORT}`))
 
 app.listen(PORT, () => {
-    console.log("App is running on port " + port);
+    console.log("App is running on port " + PORT);
 });

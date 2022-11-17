@@ -41,7 +41,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(checkJWTCookie)
 
 //auth routes
-app.use('/api/auth', authRoutes)
+app.use('/api/auth', allowCORS, authRoutes)
 app.use('/api/profile', allowCORS, checkAuth, profileRoutes)
 
 
